@@ -1,12 +1,25 @@
 
 public class Superpower {
+	
+	private int nTokensToHire;
+
+	private String lib;
+	
+	/**
+	 * Défini un superpower
+	 * @param lib: chemin d'accès
+	 * @param nTokensToHire: nombre de pions pour la combinaison
+	 */
 	public Superpower(String lib, int nTokensToHire){
 		this.lib = lib;
 		this.nTokensToHire = nTokensToHire;
 	}
-	private int nTokensToHire;
-	private String lib;
+	
 	public String getLib(){
 		return lib;
+	}
+	
+	public int getnTokensToHire() {
+		return nTokensToHire;
 	}
 }
