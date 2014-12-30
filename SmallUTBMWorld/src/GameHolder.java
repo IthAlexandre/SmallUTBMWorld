@@ -32,6 +32,16 @@ public class GameHolder extends BasicGame implements InputProviderListener {
 	private Image img2;
 	private Image currentImage;
 
+	private int yMouse;
+
+	private int xMouse;
+
+	private ClickableElement regionD;
+
+	private ClickableElement regionA;
+
+	private Image img3;
+
 	public GameHolder(String gamename) {
 		super(gamename);
 	}
@@ -40,8 +50,9 @@ public class GameHolder extends BasicGame implements InputProviderListener {
 	public void init(GameContainer gc) throws SlickException {
 		provider = new InputProvider(gc.getInput());
 		provider.addListener(this);
-		img = new Image("SW_6player_surface.jpg");
-		img2 = new Image("map.jpg");
+		img = new Image("SW_6player_surface2.jpg");
+		img2 = new Image("cible.png");
+		img3 = new Image("cible2.png");
 		currentImage = img;
 		game = new Game();
 		game.start();
@@ -57,12 +68,23 @@ public class GameHolder extends BasicGame implements InputProviderListener {
 		g.drawImage(currentImage, 0, 0);
 		for (ClickableElement cE : game.getCElements()) {
 			renderCElement(cE, g);
-		}
-		g.drawString("Howdy!", 100, 100);
+		}		
+		g.drawString("x: "+xMouse+"  y: "+yMouse, 10, 25);
+		if (regionD != null) g.drawString("depart :"+regionD.id, 10, 55);
+		else  g.drawString("depart : null", 10, 55);
+		if (regionA != null) g.drawString("arriver :"+regionA.id, 10, 70);
+		else g.drawString("arriver : null", 10, 70);
 	}
 
-	public void renderCElement(ClickableElement cE, Graphics g) {
-		g.drawImage(cE.getImg(), cE.getPosX(), cE.getPosY());
+	public void renderCElement(ClickableElement cE, Graphics g) throws SlickException {
+		if(regionD != null && cE.getId() == regionD.getId() )
+			g.drawImage(img3, cE.getPosX(), cE.getPosY());
+		else if(regionA != null && cE.getId() == regionA.getId() )
+			g.drawImage(img2, cE.getPosX(), cE.getPosY());
+		else
+			g.drawImage(cE.getImg(), cE.getPosX(), cE.getPosY());
+		if (cE.isSelection())
+			g.drawString("selection :"+cE.id, 10, 40);
 	}
 
 	@Override
@@ -78,11 +100,33 @@ public class GameHolder extends BasicGame implements InputProviderListener {
 
 	public void mousePressed(int button, int x, int y) {
 
+		boolean clear = true;
 		for (ClickableElement cE : game.getCElements()) {
 			if (cE.collide(x, y))
-				currentImage = img2;
+			{
+				cE.setSelection(!cE.isSelection());
+				if(cE.isSelection()&& (regionD == null))
+					regionD = cE;
+				else if(((ClickableRegion) regionD).near(((ClickableElement) cE).getId()))
+					regionA = cE;
+				else
+				{
+					regionD = cE;
+					regionA = null;
+				}
+			}
 			else
+			{
 				currentImage = img;
+				cE.setSelection(false);
+			}
+			if (cE.isSelection())
+				clear = false;
+		}
+		if (clear)
+		{
+			regionD = null;
+			regionA = null;
 		}
 	}
 
@@ -92,8 +136,12 @@ public class GameHolder extends BasicGame implements InputProviderListener {
 		Image imgNew = img;
 		for (ClickableElement cE : cEs) {
 			if (cE.collide(newx, newy))
-				imgNew = img2;
+				//imgNew = img2;
+				;
 		}
 		currentImage = imgNew;
+		xMouse = newx;
+		yMouse = newy;
 	}
+	
 }

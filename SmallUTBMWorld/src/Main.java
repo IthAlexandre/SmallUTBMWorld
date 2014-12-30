@@ -24,7 +24,8 @@ public class Main {
 			// stabilisation fps à 60
 			appgc.setTargetFrameRate(60);
 			// definition taille de la fenetre
-			appgc.setDisplayMode(1366, 768, false);
+			//appgc.setDisplayMode(1366, 768, false);
+			appgc.setDisplayMode(900, 600, false);
 			
 			appgc.start();
 

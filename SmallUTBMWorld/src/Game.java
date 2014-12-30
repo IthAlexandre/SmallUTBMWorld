@@ -28,15 +28,55 @@ public class Game {
 		players.add(new Player("Paul", itCombo.next(), gc));
 		players.add(new Player("John", itCombo.next(), gc));
 		players.add(new Player("Eric", itCombo.next(), gc));
-
-		cElements = new ArrayList<ClickableElement>();
+		
+		/*cElements = new ArrayList<ClickableElement>();
 		cElements.add(new ClickableRegion());
-		cElements.add(new ClickableRegion(400, 0, 100, 100));
-		cElements.add(new ClickableRegion(800, 0, 100, 100));
+		cElements.add(new ClickableRegion(400, 0, 50, 50));
+		cElements.add(new ClickableRegion(800, 0, 50, 50));*/
+
 	}
 
 	public void initializeMap() {
 		map = new Map();
+		cElements = new ArrayList<ClickableElement>();
+
+		try {
+			cElements.add(0,new ClickableRegion(1, 55, 300, 50, "selec.png"));
+			cElements.add(1,new ClickableRegion(2, 90, 360, 50, "selec.png"));
+			cElements.add(2,new ClickableRegion(3, 50, 430, 50, "selec.png"));
+			cElements.add(3,new ClickableRegion(4, 100, 490, 50, "selec.png"));
+			cElements.add(4,new ClickableRegion(5, 65, 565, 50, "selec.png"));
+			cElements.add(5,new ClickableRegion(6, 135, 100, 50, "selec.png"));
+			cElements.add(6,new ClickableRegion(7, 180, 185, 50, "selec.png"));
+			cElements.add(7,new ClickableRegion(8, 115, 250, 50, "selec.png"));
+			cElements.add(8,new ClickableRegion(9, 180, 300, 50, "selec.png"));
+			cElements.add(9,new ClickableRegion(10, 220, 360, 50, "selec.png"));
+			cElements.add(10,new ClickableRegion(11, 165, 430, 50, "selec.png"));
+			cElements.add(11,new ClickableRegion(12, 210, 555, 50, "selec.png"));
+			cElements.add(12,new ClickableRegion(13, 280, 470, 50, "selec.png"));
+			cElements.add(13,new ClickableRegion(14, 330, 390, 50, "selec.png"));
+
+		} catch (SlickException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		((ClickableRegion) cElements.get(0)).addNear("2,8,9,");
+		((ClickableRegion) cElements.get(1)).addNear("1,3,9,10,11,");
+		((ClickableRegion) cElements.get(2)).addNear("2,4,11,");
+		((ClickableRegion) cElements.get(3)).addNear("3,5,11,12,13,14,");
+		((ClickableRegion) cElements.get(4)).addNear("4,12,");
+		((ClickableRegion) cElements.get(5)).addNear("7,18,19,");
+		((ClickableRegion) cElements.get(6)).addNear("6,8,16,17,18,");
+		((ClickableRegion) cElements.get(7)).addNear("1,7,9,16,");
+		((ClickableRegion) cElements.get(8)).addNear("1,2,8,10,15,16,");
+		((ClickableRegion) cElements.get(9)).addNear("2,9,11,14,15,");
+		((ClickableRegion) cElements.get(10)).addNear("2,3,4,10,14,");
+		((ClickableRegion) cElements.get(11)).addNear("4,5,13,27,");
+		((ClickableRegion) cElements.get(12)).addNear("4,12,14,26,27,");
+		((ClickableRegion) cElements.get(13)).addNear("4,10,11,13,15,23,24,25,26,");
+
+
 	}
 
 	public void initializeRaces() {
