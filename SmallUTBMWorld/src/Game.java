@@ -1,3 +1,4 @@
+import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -28,6 +29,7 @@ public class Game {
 		players.add(new Player("Paul", itCombo.next(), gc));
 		players.add(new Player("John", itCombo.next(), gc));
 		players.add(new Player("Eric", itCombo.next(), gc));
+		
 		
 		/*cElements = new ArrayList<ClickableElement>();
 		cElements.add(new ClickableRegion());

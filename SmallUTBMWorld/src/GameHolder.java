@@ -7,6 +7,8 @@
 
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -17,14 +19,14 @@ import org.newdawn.slick.command.InputProvider;
 import org.newdawn.slick.command.InputProviderListener;
 
 public class GameHolder extends BasicGame implements InputProviderListener {
-	
+
 	private Game game;
-	
-	/** 
-	 * The input provider abstracting input 
+
+	/**
+	 * The input provider abstracting input
 	 */
 	private InputProvider provider;
-	
+
 	/**
 	 * image de la carte
 	 */
@@ -41,6 +43,8 @@ public class GameHolder extends BasicGame implements InputProviderListener {
 	private ClickableElement regionA;
 
 	private Image img3;
+
+	private boolean firstSelect;
 
 	public GameHolder(String gamename) {
 		super(gamename);
@@ -61,6 +65,21 @@ public class GameHolder extends BasicGame implements InputProviderListener {
 	@Override
 	public void update(GameContainer gc, int i) throws SlickException {
 
+		if (firstSelect) {
+			firstSelect = false;
+
+			int option = JOptionPane
+					.showConfirmDialog(null,
+							"Voulez vous attaquer cette région ?",
+							"Attaque", JOptionPane.YES_NO_OPTION,
+							JOptionPane.QUESTION_MESSAGE);
+
+			if (option == JOptionPane.YES_OPTION) {
+				// action en cas d'attaque
+			} else {
+				regionA = null;
+			}
+		}
 	}
 
 	@Override
@@ -68,23 +87,30 @@ public class GameHolder extends BasicGame implements InputProviderListener {
 		g.drawImage(currentImage, 0, 0);
 		for (ClickableElement cE : game.getCElements()) {
 			renderCElement(cE, g);
-		}		
-		g.drawString("x: "+xMouse+"  y: "+yMouse, 10, 25);
-		if (regionD != null) g.drawString("depart :"+regionD.id, 10, 55);
-		else  g.drawString("depart : null", 10, 55);
-		if (regionA != null) g.drawString("arriver :"+regionA.id, 10, 70);
-		else g.drawString("arriver : null", 10, 70);
+		}
+		
+		g.drawString("x: " + xMouse + "  y: " + yMouse, 10, 25);
+		if (regionD != null)
+			g.drawString("depart :" + regionD.id, 10, 55);
+		else
+			g.drawString("depart : null", 10, 55);
+		if (regionA != null)
+			g.drawString("arriver :" + regionA.id, 10, 70);
+		else
+			g.drawString("arriver : null", 10, 70);
 	}
 
-	public void renderCElement(ClickableElement cE, Graphics g) throws SlickException {
-		if(regionD != null && cE.getId() == regionD.getId() )
+	public void renderCElement(ClickableElement cE, Graphics g)
+			throws SlickException {
+		if (regionD != null && cE.getId() == regionD.getId())
 			g.drawImage(img3, cE.getPosX(), cE.getPosY());
-		else if(regionA != null && cE.getId() == regionA.getId() )
+		else if (regionA != null && cE.getId() == regionA.getId()) {
 			g.drawImage(img2, cE.getPosX(), cE.getPosY());
-		else
+			
+		} else
 			g.drawImage(cE.getImg(), cE.getPosX(), cE.getPosY());
 		if (cE.isSelection())
-			g.drawString("selection :"+cE.id, 10, 40);
+			g.drawString("selection :" + cE.id, 10, 40);
 	}
 
 	@Override
@@ -102,29 +128,26 @@ public class GameHolder extends BasicGame implements InputProviderListener {
 
 		boolean clear = true;
 		for (ClickableElement cE : game.getCElements()) {
-			if (cE.collide(x, y))
-			{
+			if (cE.collide(x, y)) {
 				cE.setSelection(!cE.isSelection());
-				if(cE.isSelection()&& (regionD == null))
+				if (cE.isSelection() && (regionD == null))
 					regionD = cE;
-				else if(((ClickableRegion) regionD).near(((ClickableElement) cE).getId()))
+				else if (((ClickableRegion) regionD)
+						.near(((ClickableElement) cE).getId())) {
 					regionA = cE;
-				else
-				{
+					firstSelect = true;
+				} else {
 					regionD = cE;
 					regionA = null;
 				}
-			}
-			else
-			{
+			} else {
 				currentImage = img;
 				cE.setSelection(false);
 			}
 			if (cE.isSelection())
 				clear = false;
 		}
-		if (clear)
-		{
+		if (clear) {
 			regionD = null;
 			regionA = null;
 		}
@@ -136,12 +159,12 @@ public class GameHolder extends BasicGame implements InputProviderListener {
 		Image imgNew = img;
 		for (ClickableElement cE : cEs) {
 			if (cE.collide(newx, newy))
-				//imgNew = img2;
+				// imgNew = img2;
 				;
 		}
 		currentImage = imgNew;
 		xMouse = newx;
 		yMouse = newy;
 	}
-	
+
 }

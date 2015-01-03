@@ -7,6 +7,7 @@ public class Region {
 	private boolean spawnable;
 	private boolean reachable;
 	private TokenGroup occupants;
+	private int id;
 
 	public Region(String name, boolean spawnable) {
 		this(null, name, spawnable, true, new TokenGroup());

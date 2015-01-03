@@ -34,4 +34,10 @@ public class GameController {
 		nRegion = rand.nextInt(3 - 1 + 1) + 1;
 		return nRegion;
 	}
+	
+	public int randomRegion(int size)
+	{
+		Random rand = new Random();
+		return rand.nextInt(size-1);
+	}
 }
